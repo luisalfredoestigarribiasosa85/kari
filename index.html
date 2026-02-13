@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para el Amor de Mi Vida ❤️</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: linear-gradient(135deg, #ff4e50, #fc913a);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  color: white;
+}
+
+/* -------- CORAZONES FLOTANDO -------- */
+.hearts {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.hearts span {
+  position: absolute;
+  bottom: -50px;
+  font-size: 20px;
+  animation: float 8s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes float {
+  0% { transform: translateY(0) scale(1); opacity: 0.7; }
+  100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+}
+
+/* -------- CONTENIDO -------- */
+.container {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Pantalla inicial */
+#intro {
+  animation: fadeIn 1.2s ease;
+}
+
+.heart-btn {
+  background: white;
+  color: #ff4e50;
+  border: none;
+  padding: 20px 40px;
+  font-size: 22px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.heart-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Contenido sorpresa */
+#content {
+  display: none;
+  animation: fadeIn 1.2s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.love-message {
+  font-size: 24px;
+  margin-bottom: 25px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* -------- SLIDER -------- */
+.slider {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 25px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  margin: auto;
+  backdrop-filter: blur(10px);
+}
+
+.slides {
+  display: flex;
+  height: 100%;
+  transition: transform 0.7s ease-in-out;
+}
+
+.slides img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
+  transition: transform 0.5s ease;
+}
+
+.slides img:hover {
+  transform: scale(1.05);
+}
+
+/* Dots */
+.dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  gap: 8px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background: white;
+  opacity: 0.4;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.dot.active {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.footer {
+  margin-top: 20px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="hearts" id="hearts"></div>
+
+<div class="container">
+
+  <div id="intro">
+    <button class="heart-btn" onclick="showSurprise()">
+      ❤️ Sorpresa!
+    </button>
+  </div>
+
+  <div id="content">
+    <div class="love-message">
+      Karina ❤️<br><br>
+      Eres mi compañera, mi apoyo y mi mayor bendición.<br>
+      Gracias por cada sonrisa, cada abrazo y cada momento juntos.<br>
+      Te amo hoy, mañana y siempre.
+    </div>
+
+    <div class="slider">
+      <div class="slides" id="slides">
+        <img src="foto1.jpg" alt="Nosotros 1">
+        <img src="foto2.jpg" alt="Nosotros 2">
+        <img src="foto3.jpg" alt="Nosotros 3">
+      </div>
+    </div>
+
+    <div class="dots" id="dots"></div>
+
+    <div class="footer">
+      Hecho con ❤️ por tu desarrollador favorito
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* Mostrar sorpresa */
+function showSurprise() {
+  document.getElementById("intro").style.display = "none";
+  document.getElementById("content").style.display = "block";
+}
+
+/* Slider */
+const slides = document.getElementById("slides");
+const dotsContainer = document.getElementById("dots");
+let index = 0;
+const totalSlides = slides.children.length;
+
+for (let i = 0; i < totalSlides; i++) {
+  const dot = document.createElement("div");
+  dot.classList.add("dot");
+  dot.addEventListener("click", () => {
+    index = i;
+    updateSlide();
+  });
+  dotsContainer.appendChild(dot);
+}
+
+function updateDots() {
+  document.querySelectorAll(".dot").forEach((dot, i) => {
+    dot.classList.toggle("active", i === index);
+  });
+}
+
+function updateSlide() {
+  slides.style.transform = `translateX(-${index * 100}%)`;
+  updateDots();
+}
+
+function nextSlide() {
+  index = (index + 1) % totalSlides;
+  updateSlide();
+}
+
+setInterval(nextSlide, 4000);
+updateSlide();
+
+/* Corazones flotando */
+const heartsContainer = document.getElementById("hearts");
+
+function createHeart() {
+  const heart = document.createElement("span");
+  heart.innerHTML = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+  heart.style.animationDuration = (Math.random() * 5 + 5) + "s";
+  heartsContainer.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 8000);
+}
+
+setInterval(createHeart, 500);
+</script>
+
+</body>
+</html>
